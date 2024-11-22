@@ -1,13 +1,22 @@
 window.onload = (e) => {
-console.log("ページ読み込み完了")
+    console.log("ページ読み込み完了")
 
-    let theading = ["名前", "出欠1"]
+    let theading = ["名前", "肩書","出欠1"]
     let data = [
-        ["John", "john@example.com"],
-        ["Mark", "mark@example.com"],
-        ["Eoin", "eoin@example.com"],
-        ["Sarah", "sarahcdd@example.com"],
-        ["Afshin", "afshin@example.com"]
+        ["ゆき", "TW01"],
+        ["きみしー", "TW02"],
+        ["りょーすけ", "TW03"],
+        ["なつき", "TW04"],
+        ["ふみや", "TW05"],
+        ["あべちゃん", "TW06"],
+        ["かがやん", "TW07"],
+        ["かっしー", "事務局"],
+        ["ひろし", "事務局"],
+        ["たろー", "講師"],
+        ["らんこ", "チューター"],
+        ["こすげ", "チューター"],
+        ["かわたつ", "チューター"],
+        ["ぺんぎん", "チューター"],
     ]
     makegrid(theading, data)
 
