@@ -1,27 +1,27 @@
 window.onload = (e) => {
     console.log("ページ読み込み完了")
 
-    let theading = ["名前", "肩書","出欠1"]
+    let theading = ["名前", "肩書", "出欠1"]
     let data = [
-        ["ゆき", "TW01"],
+        ["ゆき", "TW01", checkbox(1, false)],
         ["きみしー", "TW02"],
         ["りょーすけ", "TW03"],
         ["なつき", "TW04"],
         ["ふみや", "TW05"],
         ["あべちゃん", "TW06"],
         ["かがやん", "TW07"],
-        ["かっしー", "事務局"],
-        ["ひろし", "事務局"],
+        ["かっしー", "副担任"],
+        ["ひろし", "担任"],
         ["たろー", "講師"],
         ["らんこ", "チューター"],
         ["こすげ", "チューター"],
         ["かわたつ", "チューター"],
         ["ぺんぎん", "チューター"],
     ]
-    makegrid(theading, data)
+    make_grid_on_history_area(theading, data)
 
     // 見出しとデータを与えて表を出力する関数
-    function makegrid(heading, data) {
+    function make_grid_on_history_area(heading, data) {
         console.log("表の生成開始")
         const grid = new gridjs.Grid({
             sort: true,
@@ -31,6 +31,20 @@ window.onload = (e) => {
 
         //grid.renderの引数をjqueryで指定する場合には、.get(0)をつける(DOMそのものを指定する必要があるため)
         grid.render($(".history-area").get(0));
+    }
+
+    // 表の中にチェックボックスを挿入する関数
+    function checkbox(id, checked) {
+        const tmp = "<input type='checkbox' id=" + id
+        switch (checked) {
+            case true:
+                return gridjs.html(tmp + " checked />");
+                break;
+
+            default:
+                return gridjs.html(tmp + " />");
+                break;
+        }
     }
 
 }
