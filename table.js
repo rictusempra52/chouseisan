@@ -3,7 +3,7 @@ window.onload = (e) => {
 
     let theading = ["名前", "肩書", "出欠1"]
     let data = [
-        ["ゆき", "TW01", checkbox(1, false)],
+        ["ゆき", "TW01"],
         ["きみしー", "TW02"],
         ["りょーすけ", "TW03"],
         ["なつき", "TW04"],
@@ -18,6 +18,12 @@ window.onload = (e) => {
         ["かわたつ", "チューター"],
         ["ぺんぎん", "チューター"],
     ]
+
+    // すべての「出欠1」列にチェックボックスを挿入する
+    for (let i = 0; i < data.length; i++) {
+        data[i].push(checkbox(i, false))
+    }
+
     make_grid_on_history_area(theading, data)
 
     // 見出しとデータを与えて表を出力する関数
