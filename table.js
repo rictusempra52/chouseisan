@@ -13,18 +13,22 @@ window.onload = (e) => {
         ["かっしー", "副担任"],
         ["ひろし", "担任"],
         ["たろー", "講師"],
-        ["らんこ", "チューター"],
-        ["こすげ", "チューター"],
         ["かわたつ", "チューター"],
+        ["こすげ", "チューター"],
         ["ぺんぎん", "チューター"],
+        ["らんこ", "チューター"],
     ]
+    const headcount = data.length
 
     // すべての「出欠1」列にチェックボックスを挿入する
     for (let i = 0; i < data.length; i++) {
-        data[i].push(checkbox(i, false))
+        data[i][2] = checkbox(i, false)
+        console.log(i + "番目の☑を挿入");
     }
+    data.push(["合計人数：" + headcount, ""])
 
-    make_grid_on_history_area(theading, data)
+    // 表を出力
+    make_grid_on_history_area(theading, data);
 
     // 見出しとデータを与えて表を出力する関数
     function make_grid_on_history_area(heading, data) {
