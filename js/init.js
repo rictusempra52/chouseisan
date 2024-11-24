@@ -1,12 +1,74 @@
-
-//最小の日付を今日にする関数
-$(function () {
+window.onload = (e) => {
+    console.log("ページ読み込み完了")
 
     // input[type="date"]のminとmaxを現在日時取得して指定
-    var minD = new Date();// 現在日時取得
-    //minDをYYYY-MM-DDに整形
-    var min = minD.toISOString().split('T')[0];
+    //今日の日付をYYYY-MM-DDに整形
+    const today = new Date().toISOString().split('T')[0];
     // min属性を設定
-    $('input[type ="date"]').attr('min', min);
+    $('input[type ="date"]').attr('min', today);
+    $('input[type ="date"]').attr('value', today);
+    console.log(today + "を初期値に設定");
 
-});
+    //データの定義
+
+    let tableheading = ["名前", "出席番号", "出欠1"]
+    let data = [
+        ["ゆき", "TW01"],
+        ["きみしー", "TW02"],
+        ["りょーすけ", "TW03"],
+        ["なつき", "TW04"],
+        ["ふみや", "TW05"],
+        ["あべちゃん", "TW06"],
+        ["かがやん", "TW07"],
+        ["かっしー",],
+        ["ひろし",],
+        ["たろー",],
+        ["かわたつ",],
+        ["こすげ",],
+        ["ほそかわ"],
+        ["ぺんぎん",],
+        ["らんこ",],
+    ]
+    // 合計人数を表す定数
+    const headcount = data.length
+
+    // すべての「出欠1」列にチェックボックスを挿入する
+    for (let i = 0; i < headcount; i++) {
+        data[i][2] = checkbox(i, "participation", false)
+        console.log(i + "番目の☑を挿入");
+    }
+
+    // 合計人数を最下列に表示
+    data.push(["合計人数：" + headcount, ""])
+
+    // 表を出力
+    make_grid_on_history_area(tableheading, data);
+
+    // 見出しとデータを与えると表を出力する関数
+    function make_grid_on_history_area(heading, data) {
+        console.log("表の生成開始")
+        const grid = new gridjs.Grid({
+            sort: true,
+            columns: heading,
+            data: data
+        });
+
+        //grid.renderの引数をjqueryで指定する場合には、.get(0)をつける(DOMそのものを指定する必要があるため)
+        grid.render($(".history-area").get(0));
+    }
+
+    // 表の中にチェックボックスを挿入する関数
+    function checkbox(id, name, checked) {
+        const tmp = "<input type='checkbox' id=" + id + " name=" + name
+        switch (checked) {
+            case true:
+                return gridjs.html(tmp + " checked />");
+                break;
+
+            default:
+                return gridjs.html(tmp + " />");
+                break;
+        }
+    }
+
+}
