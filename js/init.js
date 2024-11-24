@@ -35,8 +35,8 @@ window.onload = (e) => {
     // すべての「出欠1」列にチェックボックスを挿入する
     for (let i = 0; i < headcount; i++) {
         data[i][2] = checkbox(i, "participation", false)
-        console.log(i + "番目の☑を挿入");
-    }
+    } console.log("☑を挿入完了");
+
 
     // 合計人数を最下列に表示
     data.push(["合計人数：" + headcount, ""])
@@ -55,6 +55,8 @@ window.onload = (e) => {
 
         //grid.renderの引数をjqueryで指定する場合には、.get(0)をつける(DOMそのものを指定する必要があるため)
         grid.render($(".history-area").get(0));
+        console.log("表の出力完了");
+
     }
 
     // 表の中にチェックボックスを挿入する関数
