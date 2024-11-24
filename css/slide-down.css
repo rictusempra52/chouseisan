@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+
+/* -- .slide-down -------------------------------------------------------------------------------------------- */
+
+.slide-down:after {
+    content: " ▼";
+}
+
+.slide-down:hover {
+    cursor: pointer;
+}
+
+
+.active:after {
+    content: " ▲";
+}
+
+
+
+
+/* -- div.slide-* -------------------------------------------------------------------------------------------- */
+
+div.slide-1,
+div.slide-2,
+div.slide-3,
+div.slide-4,
+div.slide-5,
+div.slide-6,
+div.slide-7,
+div.slide-8 {
+    display: none;
+}
