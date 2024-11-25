@@ -14,6 +14,7 @@
 // slide1がclickされた時の処理
 $('.slide-down').on('click', slide_up_or_down);
 $('#submit_date').click(() => submit_date(2));
+$('#submit').click(() => submit_nittei());
 
 
 function slide_up_or_down() {
@@ -41,4 +42,16 @@ function submit_date(column) {
     tableheading[column] = selected_date
     $('.gridjs-th-content').eq(column).text(selected_date);
     console.log(selected_date);
+}
+
+function submit_nittei() {
+    const sanka = $('input[type="checkbox"][name="participation"]')
+        .map(function () {
+            return {
+                checked: $(this).prop('checked')
+            }; // 各要素の値(value)を配列にする
+
+        }).get();
+    console.log(sanka);
+    
 }

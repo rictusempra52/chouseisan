@@ -4,6 +4,10 @@ td.gridjs-td {
     padding: 5px;
 }
 
+th.gridjs-th {
+    padding: 5px;
+}
+
 /* -- .slide-down -------------------------------------------------------------------------------------------- */
 
 .slide-down:after {
