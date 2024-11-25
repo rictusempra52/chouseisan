@@ -13,6 +13,8 @@
 
 // slide1がclickされた時の処理
 $('.slide-down').on('click', slide_up_or_down);
+$('#submit_date').click(() => submit_date(2));
+
 
 function slide_up_or_down() {
 
@@ -32,4 +34,11 @@ function slide_up_or_down() {
 
     }
 
+}
+
+function submit_date(column) {
+    const selected_date = $('#chousei-nittei').val();
+    tableheading[column] = selected_date
+    $('.gridjs-th-content').eq(column).text(selected_date);
+    console.log(selected_date);
 }
