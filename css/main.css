@@ -1,5 +1,13 @@
 @charset "utf-8";
 
+td.gridjs-td input[type="button"] {
+    background-color: cadetblue;
+    padding: 5px;
+    width: 100%;
+    color: white;
+}
+
+
 td.gridjs-td {
     padding: 5px;
 }
