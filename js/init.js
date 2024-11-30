@@ -23,7 +23,7 @@ let tableheading = ["名前", "出席番号", "出欠1"]
  * @property {string} [stu_num] - 学生番号
  * @property {number} parti_1 - 出欠の状態 (attendance 定数を使用)
  */
-let member_data = [
+let user_data = [
     {
         name: "ゆき",
         stu_num: "TW01",
@@ -93,13 +93,12 @@ let member_data = [
     }
 ];
 
-let table_html = [[]]
 
 
 /**
  *合計人数を表す定数
    */
-const headcount = member_data.length
+const headcount = user_data.length
 
 // input[type="date"]のminとmaxを現在日時取得して指定
 //今日の日付をYYYY-MM-DDに整形
@@ -113,22 +112,19 @@ console.log(today + "を初期値に設定");
 window.onload = () => {
     console.log("ページ読み込み完了")
 
-    // すべての「出欠1」列にチェックボックスを挿入する
-    for (let i = 0; i < headcount; i++) {
-
-        // もしtable_html[i]（i番目の行）がまだ存在していない場合、新しく空の配列を作る
-        // → この配列は行ごとに情報を入れるための箱として使う
-        if (!table_html[i]) table_html[i] = [];
-
-        // i番目の行の3列目（インデックス2）にボタンを作成して格納
-        table_html[i][2] = chousei_button(i, "participation", member_data[i].parti_1);
-        console.log(table_html[i][2]);
-    }
+    // テーブルデータを生成（ボタン列を追加）
+    const table_html = user_data.map((row, index) => {
+        return [
+            row.name,
+            row.stu_num,
+            chousei_button(index, "participation", row.parti_1)
+        ];
+    });
     console.log("日程調整用ボタン挿入完了");
 
 
-    // 合計人数を最下列に表示
-    member_data.push(["合計人数：" + headcount, ""])
+    // // 合計人数を最下列に表示
+    // table_html.push(["合計人数：" + headcount, ""])
 
     // 表を出力
     make_grid_on_history_area(tableheading, table_html);
