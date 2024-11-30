@@ -1,23 +1,90 @@
 
 //データの定義
+const attendance = {
+
+    not_decided: 0,
+    presence: 1,
+    absence: 2,
+}
+
 let tableheading = ["名前", "出席番号", "出欠1"]
 let data = [
-    ["ゆき", "TW01"],
-    ["きみしー", "TW02"],
-    ["りょーすけ", "TW03"],
-    ["なつき", "TW04"],
-    ["ふみや", "TW05"],
-    ["あべちゃん", "TW06"],
-    ["かがやん", "TW07"],
-    ["かっしー",],
-    ["ひろし",],
-    ["たろー",],
-    ["かわたつ",],
-    ["こすげ",],
-    ["ほそかわ"],
-    ["ぺんぎん",],
-    ["らんこ",],
-]
+    {
+        name: "ゆき",
+        stu_num: "TW01",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "きみしー",
+        stu_num: "TW02",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "りょーすけ",
+        stu_num: "TW03",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "なつき",
+        stu_num: "TW04",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "ふみや",
+        stu_num: "TW05",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "あべちゃん",
+        stu_num: "TW06",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "かがやん",
+        stu_num: "TW07",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "かっしー",
+        stu_num: "TW08",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "ひろし",
+        stu_num: "TW09",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "たろー",
+        stu_num: "TW10",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "かわたつ",
+        stu_num: "TW11",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "こすげ",
+        stu_num: "TW12",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "ほそかわ",
+        stu_num: "TW13",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "ぺんぎん",
+        stu_num: "TW14",
+        parti_1: attendance.not_decided
+    },
+    {
+        name: "らんこ",
+        stu_num: "TW15",
+        parti_1: attendance.not_decided
+    }]
+
 // 合計人数を表す定数
 const headcount = data.length
 
@@ -46,7 +113,7 @@ window.onload = (e) => {
     // 表を出力
     make_grid_on_history_area(tableheading, data);
 
-    // 見出しとデータを与えると表を出   力する関数
+    // 見出しとデータを与えると表を出力する関数
     function make_grid_on_history_area(heading, data) {
         console.log("表の生成開始")
         const grid = new gridjs.Grid({
