@@ -73,7 +73,7 @@ function change_participation(id,) {
     // console.log(id);
     // console.log(user_data[id]);
 
-    user_data[id].parti_1 = (user_data[id].parti_1 + 1) % 3;
-    $('[id="' + id + '"]').val(["未定", "出席", "欠席"][user_data[id].parti_1]);
+    user_data[id].parti_0 = (user_data[id].parti_0 + 1) % 3;
+    $('[id="' + id + '"]').val(["未定", "出席", "欠席"][user_data[id].parti_0]);
 }
 

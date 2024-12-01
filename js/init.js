@@ -21,75 +21,75 @@ let tableheading = ["名前", "出席番号"];
  * @type {Array<Object>} data - 学生ごとの出欠情報を保持する配列
  * @property {string} name - 学生の名前
  * @property {string} [stu_num] - 学生番号
- * @property {number} parti_1 - 出欠の状態 (attendance 定数を使用)
+ * @property {number} parti_0 - 出欠の状態 (attendance 定数を使用)
  */
 let user_data = [
     {
         name: "ゆき",
         stu_num: "TW01",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "きみしー",
         stu_num: "TW02",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "りょーすけ",
         stu_num: "TW03",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "なつき",
         stu_num: "TW04",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "ふみや",
         stu_num: "TW05",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "あべちゃん",
         stu_num: "TW06",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "かがやん",
         stu_num: "TW07",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "かっしー",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "ひろし",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "たろー",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "かわたつ",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "こすげ",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "ほそかわ",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "ぺんぎん",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     },
     {
         name: "らんこ",
-        parti_1: atnd.not_decided // 出欠: 未定
+        parti_0: atnd.not_decided // 出欠: 未定
     }
 ];
 let table_html;
@@ -132,7 +132,7 @@ window.onload = () => {
     // 表を出力
     make_grid_on_history_area(tableheading, table_html);
     addColumnToRight("出欠", user_data.map((row) => {
-        return chousei_button("participation", row.parti_1);
+        return chousei_button("participation", row.parti_0);
     }));
 }
 
