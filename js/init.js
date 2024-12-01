@@ -8,7 +8,7 @@
  * @property {number} presence - 出席 (1)
  * @property {number} absence - 欠席 (2)
  */
-const attendance = {
+const atnd = {
     not_decided: 0, // 未定
     presence: 1,    // 出席
     absence: 2,     // 欠席
@@ -27,73 +27,71 @@ let user_data = [
     {
         name: "ゆき",
         stu_num: "TW01",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "きみしー",
         stu_num: "TW02",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "りょーすけ",
         stu_num: "TW03",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "なつき",
         stu_num: "TW04",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "ふみや",
         stu_num: "TW05",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "あべちゃん",
         stu_num: "TW06",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "かがやん",
         stu_num: "TW07",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "かっしー",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "ひろし",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "たろー",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "かわたつ",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "こすげ",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "ほそかわ",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "ぺんぎん",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     },
     {
         name: "らんこ",
-        parti_1: attendance.not_decided // 出欠: 未定
+        parti_1: atnd.not_decided // 出欠: 未定
     }
 ];
-
-
 
 /**
  *合計人数を表す定数
@@ -120,11 +118,9 @@ window.onload = () => {
             chousei_button(index, "participation", row.parti_1)
         ];
     });
+
     console.log("日程調整用ボタン挿入完了");
-
-
-    // // 合計人数を最下列に表示
-    // table_html.push(["合計人数：" + headcount, ""])
+    console.log(table_html);
 
     // 表を出力
     make_grid_on_history_area(tableheading, table_html);
@@ -172,7 +168,9 @@ window.onload = () => {
         }
 
         const txt = ["未定", "出席", "欠席"]; // 各状態に対応するテキスト
-        const tmp = "<input type='button' id='" + id + "' name='" + name + "' value='" + txt[status] + "' />";
+        let tmp = "<input type='button' id='" + id
+        tmp += "' name='" + name
+        tmp += "' value='" + txt[status] + "' />";
         return gridjs.html(tmp);
     }
 }

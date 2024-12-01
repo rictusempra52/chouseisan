@@ -1,20 +1,13 @@
 
-/*--------------------------------------------------------------
-	
-    Script Name : click-process
-    Author      : FIRSTSTEP - Motohiro Tani
-    Author URL  : https://www.1-firststep.com
-    Create Date : 2018/10/28
-    Version     : 1.0
-    Last Update : 2018/10/28
-	
---------------------------------------------------------------*/
-
-
 // slide1がclickされた時の処理
 $('.slide-down').on('click', slide_up_or_down);
-$('#submit_date').click(() => submit_date(2));
+$('#add_date').click(() => add_date(Object.keys(user_data[0]).length - 1));
 $('#submit').click(() => submit_nittei());
+// grid.js中の日程入力ボタンがclickされた時の処理
+// このbuttonは動的に作成されているので、onを使うそうです
+$(document).on('click', '.gridjs-td input[type="button"]', function () {
+    change_participation($(this).attr('id'));
+});
 
 
 function slide_up_or_down() {
@@ -37,21 +30,40 @@ function slide_up_or_down() {
 
 }
 
-function submit_date(column) {
+function add_date(column) {
     const selected_date = $('#chousei-nittei').val();
     tableheading[column] = selected_date
     $('.gridjs-th-content').eq(column).text(selected_date);
     console.log(selected_date);
+
+    // 1. 新しい列の見出しを追加
+    tableheading.push(selected_date);
+
+    //2. user_dataの各要素にparti_○というプロパティを追加する(追加するときは存在しない名前を定義する)
+    user_data.forEach((e) => {
+        const tmp = 'parti_' + column
+        console.log(tmp);
+
+        e[tmp] = atnd.not_decided
+
+    });
+    // console.log(user_data);
+
 }
 
 function submit_nittei() {
-    const sanka = $('input[type="checkbox"][name="participation"]')
-        .map(function () {
-            return {
-                checked: $(this).prop('checked')
-            }; // 各要素の値(value)を配列にする
 
-        }).get();
-    console.log(sanka);
-    
 }
+
+/** 
+* user_dataの出欠情報を1つ進める
+* 3を超えたら0(未定)に戻す
+*/
+function change_participation(id) {
+    console.log(id);
+    console.log(user_data[id]);
+
+    user_data[id].parti_1 = (user_data[id].parti_1 + 1) % 3;
+    $('[id="' + id + '"]').val(["未定", "出席", "欠席"][user_data[id].parti_1]);
+}
+
