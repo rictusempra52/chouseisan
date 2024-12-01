@@ -39,10 +39,10 @@ function add_date() {
     // 新しい見出しを追加
     tableheading.push(selected_date);
 
-    // 見出しを更新
-    $('.gridjs-th-content').eq(newColumnIndex).text(selected_date);
-    console.log(selected_date);
-
+    // // 見出しを更新
+    const updatedcolumns = [...grid.config.columns]
+    updatedcolumns[updatedcolumns.length - 1] = selected_date
+    grid.updateConfig({ colomns: updatedcolumns, }).forceRender()
 
     //2. user_dataの各要素にparti_○というプロパティを追加する(追加するときは存在しない名前を定義する)
     user_data.forEach((e) => {
@@ -54,15 +54,7 @@ function add_date() {
     });
 
     // 3. grid.jsの表を更新する
-    console.log(newColumnIndex);
-    // table_html.map(function (element, index) {
 
-    //     element[index][newColumnIndex] = chousei_button("participation", atnd.not_decided);
-
-    // });
-    console.log("tableheading:");
-    console.log(tableheading);
-    console.log("table_html:"); console.log(table_html);
     addColumnToRight(
         selected_date,
         Array(table_html.length).fill(chousei_button("participation", atnd.not_decided))
@@ -77,9 +69,9 @@ function submit_nittei() {
 * user_dataの出欠情報を1つ進める
 * 3を超えたら0(未定)に戻す
 */
-function change_participation(id) {
-    console.log(id);
-    console.log(user_data[id]);
+function change_participation(id,) {
+    // console.log(id);
+    // console.log(user_data[id]);
 
     user_data[id].parti_1 = (user_data[id].parti_1 + 1) % 3;
     $('[id="' + id + '"]').val(["未定", "出席", "欠席"][user_data[id].parti_1]);

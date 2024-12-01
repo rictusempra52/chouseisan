@@ -58,12 +58,17 @@ function chousei_button(name, status) {
 * @param {array} data - 新しい列に表示するデータ（各行ごとに値を設定する配列）
 */
 function addColumnToRight(columnName, data) {
+    console.log("表の更新");
 
-    // Gridの設定に新しい列を追加
+    // 既存の列情報を取得し、新しい列名を追加
+    const updatedColumns = [...grid.config.columns, columnName];
+
+    // 既存の行データを取得し、それぞれの行に新しいデータを追加
+    const updatedData = grid.config.data.map((row, index) => [...row, data[index]]);
+
+    // 更新した列情報とデータを設定して再描画
     grid.updateConfig({
-        columns: [...grid.config.columns, columnName], // 既存の列に新しい列を追加
-        data: grid.config.data.map((row, index) => [
-            ...row, data[index]
-        ]), // 各行に新しいデータを追加
-    }).forceRender(); // 更新を強制的に反映
+        columns: updatedColumns, // 更新した列名リスト
+        data: updatedData,       // 更新したデータ
+    }).forceRender(); // 更新した内容を画面に即座に反映
 }

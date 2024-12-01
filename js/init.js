@@ -14,7 +14,7 @@ const atnd = {
     absence: 2,     // 欠席
 };
 
-let tableheading = ["名前", "出席番号", "出欠1"]
+let tableheading = ["名前", "出席番号"];
 /**
  * 学生の出欠データリスト
  * 
@@ -118,12 +118,11 @@ console.log(today + "を初期値に設定");
 window.onload = () => {
     console.log("ページ読み込み完了")
 
-    // テーブルデータを生成（ボタン列を追加）
-    table_html = user_data.map((row, index) => {
+    // テーブルデータを生成
+    table_html = user_data.map((row) => {
         return [
             row.name,
             row.stu_num,
-            chousei_button("participation", row.parti_1)
         ];
     });
 
@@ -132,6 +131,8 @@ window.onload = () => {
 
     // 表を出力
     make_grid_on_history_area(tableheading, table_html);
-
+    addColumnToRight("出欠", user_data.map((row) => {
+        return chousei_button("participation", row.parti_1);
+    }));
 }
 
