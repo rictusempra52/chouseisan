@@ -1,7 +1,7 @@
 
 // slide1がclickされた時の処理
 $('.slide-down').on('click', slide_up_or_down);
-$('#add_date').click(() => add_date(Object.keys(user_data[0]).length - 1));
+$('#add_date').click(() => add_date(Object.keys(user_data[0]).length));
 $('#submit').click(() => submit_nittei());
 // grid.js中の日程入力ボタンがclickされた時の処理
 // このbuttonは動的に作成されているので、onを使うそうです
@@ -41,14 +41,23 @@ function add_date(column) {
 
     //2. user_dataの各要素にparti_○というプロパティを追加する(追加するときは存在しない名前を定義する)
     user_data.forEach((e) => {
-        const tmp = 'parti_' + column
+        const tmp = 'parti_' + (column - 1)
         console.log(tmp);
 
         e[tmp] = atnd.not_decided
 
     });
     // console.log(user_data);
+    // 3. grid.jsの表を更新する
+    const table_html = user_data.map((row, index) => {
+        return [
+            row.name,
+            row.stu_num,
+            chousei_button(index, "participation", row['parti_' + (column - 1)])
+        ];
+    })
 
+    make_grid_on_history_area(tableheading, table_html);
 }
 
 function submit_nittei() {
