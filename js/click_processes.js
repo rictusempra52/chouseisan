@@ -65,7 +65,7 @@ function add_date() {
     console.log("table_html:"); console.log(table_html);
     addColumnToRight(
         selected_date,
-        chousei_button("participation", atnd.not_decided)
+        Array(table_html.length).fill(chousei_button("participation", atnd.not_decided))
     );
 }
 

@@ -53,10 +53,17 @@ function chousei_button(name, status) {
 }
 
 // 列を右端に追加する関数
+/**
+* @param {string} columnName - 新しく追加する列の名前
+* @param {array} data - 新しい列に表示するデータ（各行ごとに値を設定する配列）
+*/
 function addColumnToRight(columnName, data) {
+
     // Gridの設定に新しい列を追加
     grid.updateConfig({
         columns: [...grid.config.columns, columnName], // 既存の列に新しい列を追加
-        data: grid.config.data.map((row, index) => [...row, data[index]]), // 各行に新しいデータを追加
+        data: grid.config.data.map((row, index) => [
+            ...row, data[index]
+        ]), // 各行に新しいデータを追加
     }).forceRender(); // 更新を強制的に反映
 }
