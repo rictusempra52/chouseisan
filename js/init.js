@@ -92,6 +92,14 @@ let user_data = [
         parti_1: atnd.not_decided // 出欠: 未定
     }
 ];
+let table_html;
+/**
+ * 日程調整用ボタンのIDを管理する変数
+ * IDをかぶらせてはいけないため、この変数で最大値を管理
+ */
+let max_btn_id = 0;
+
+let grid;
 
 /**
  *合計人数を表す定数
@@ -111,11 +119,11 @@ window.onload = () => {
     console.log("ページ読み込み完了")
 
     // テーブルデータを生成（ボタン列を追加）
-    const table_html = user_data.map((row, index) => {
+    table_html = user_data.map((row, index) => {
         return [
             row.name,
             row.stu_num,
-            chousei_button(index, "participation", row.parti_1)
+            chousei_button("participation", row.parti_1)
         ];
     });
 

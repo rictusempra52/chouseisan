@@ -1,7 +1,7 @@
 
 // slide1がclickされた時の処理
 $('.slide-down').on('click', slide_up_or_down);
-$('#add_date').click(() => add_date(Object.keys(user_data[0]).length));
+$('#add_date').click(() => add_date());
 $('#submit').click(() => submit_nittei());
 // grid.js中の日程入力ボタンがclickされた時の処理
 // このbuttonは動的に作成されているので、onを使うそうです
@@ -30,34 +30,43 @@ function slide_up_or_down() {
 
 }
 
-function add_date(column) {
+function add_date() {
     const selected_date = $('#chousei-nittei').val();
-    tableheading[column] = selected_date
-    $('.gridjs-th-content').eq(column).text(selected_date);
+
+    // 新しい列を右端に追加するためのインデックスを計算
+    const newColumnIndex = tableheading.length;
+
+    // 新しい見出しを追加
+    tableheading.push(selected_date);
+
+    // 見出しを更新
+    $('.gridjs-th-content').eq(newColumnIndex).text(selected_date);
     console.log(selected_date);
 
-    // 1. 新しい列の見出しを追加
-    tableheading.push(selected_date);
 
     //2. user_dataの各要素にparti_○というプロパティを追加する(追加するときは存在しない名前を定義する)
     user_data.forEach((e) => {
-        const tmp = 'parti_' + (column - 1)
-        console.log(tmp);
+        const newprop = 'parti_' + newColumnIndex;
+        console.log(newprop);
 
-        e[tmp] = atnd.not_decided
+        e[newprop] = atnd.not_decided;
 
     });
-    // console.log(user_data);
-    // 3. grid.jsの表を更新する
-    const table_html = user_data.map((row, index) => {
-        return [
-            row.name,
-            row.stu_num,
-            chousei_button(index, "participation", row['parti_' + (column - 1)])
-        ];
-    })
 
-    make_grid_on_history_area(tableheading, table_html);
+    // 3. grid.jsの表を更新する
+    console.log(newColumnIndex);
+    // table_html.map(function (element, index) {
+
+    //     element[index][newColumnIndex] = chousei_button("participation", atnd.not_decided);
+
+    // });
+    console.log("tableheading:");
+    console.log(tableheading);
+    console.log("table_html:"); console.log(table_html);
+    addColumnToRight(
+        selected_date,
+        chousei_button("participation", atnd.not_decided)
+    );
 }
 
 function submit_nittei() {
