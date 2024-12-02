@@ -6,7 +6,7 @@ $('#submit').click(() => submit_nittei());
 // grid.js中の日程入力ボタンがclickされた時の処理
 // このbuttonは動的に作成されているので、onを使うそうです
 $(document).on('click', '.gridjs-td input[type="button"]', function () {
-    change_participation($(this).attr('id'));
+    change_participation($(this).attr('id'), $(this).attr(''));
 });
 
 
@@ -34,7 +34,7 @@ function add_date() {
     const selected_date = $('#chousei-nittei').val();
 
     // 新しい列を右端に追加するためのインデックスを計算
-    const newColumnIndex = tableheading.length;
+    const newColumnIndex = tableheading.length - 1;
 
     // 新しい見出しを追加
     tableheading.push(selected_date);
@@ -48,13 +48,11 @@ function add_date() {
     user_data.forEach((e) => {
         const newprop = 'parti_' + newColumnIndex;
         console.log(newprop);
-
         e[newprop] = atnd.not_decided;
 
     });
 
     // 3. grid.jsの表を更新する
-
     addColumnToRight(
         selected_date,
         Array(table_html.length).fill(chousei_button("participation", atnd.not_decided))
@@ -69,11 +67,21 @@ function submit_nittei() {
 * user_dataの出欠情報を1つ進める
 * 3を超えたら0(未定)に戻す
 */
-function change_participation(id,) {
+function change_participation(id) {
     // console.log(id);
     // console.log(user_data[id]);
 
-    user_data[id].parti_0 = (user_data[id].parti_0 + 1) % 3;
-    $('[id="' + id + '"]').val(["未定", "出席", "欠席"][user_data[id].parti_0]);
+    // parti_○　の○部分を計算する
+    const parti_num = Math.floor(id / user_data.length) + 1;
+    const targetprop = 'parti_' + parti_num;
+
+    user_data[id][targetprop] = (user_data[id][targetprop]) % 3;
+
+    console.log(user_data[id][targetprop]);
+    console.log(id + ":id parti_num:" + parti_num);
+
+
+
+    $('[id="' + id + '"]').val(["未定", "出席", "欠席"][user_data[id][targetprop]]);
 }
 
