@@ -1,7 +1,9 @@
 
 // slide1がclickされた時の処理
 $('.slide-down').on('click', slide_up_or_down);
+// 日程決定ボタンがclickされた時の処理
 $('#add_date').click(() => add_date());
+// 日程送信ボタンがclickされた時の処理
 $('#submit').click(() => submit_nittei());
 // grid.js中の日程入力ボタンがclickされた時の処理
 // このbuttonは動的に作成されているので、onを使うそうです
@@ -39,18 +41,15 @@ function add_date() {
     // 新しい見出しを追加
     tableheading.push(selected_date);
 
-    // // 見出しを更新
+    // 見出しを更新
     const updatedcolumns = [...grid.config.columns]
-    updatedcolumns[updatedcolumns.length - 1] = selected_date
+    updatedcolumns.push(selected_date)
     grid.updateConfig({ colomns: updatedcolumns, }).forceRender()
 
-    //2. user_dataの各要素にparti_○というプロパティを追加する(追加するときは存在しない名前を定義する)
-    user_data.forEach((e) => {
-        const newprop = 'parti_' + newColumnIndex;
-        console.log(newprop);
-        e[newprop] = atnd.not_decided;
-
-    });
+    //2. user_dataのparticipationプロパティ(配列)に、新しい列を追加
+    user_data.map((user) => {
+        user.push_participation(atnd.not_decided);
+    })
 
     // 3. grid.jsの表を更新する
     addColumnToRight(
@@ -72,15 +71,13 @@ function change_participation(id) {
     // console.log(user_data[id]);
 
     // parti_○　の○部分を計算する
-    const parti_num = Math.floor(id / user_data.length) + 1;
+    const parti_num = Math.floor(id / user_data.length);
     const targetprop = 'parti_' + parti_num;
 
-    user_data[id][targetprop] = (user_data[id][targetprop]) % 3;
-
-    console.log(user_data[id][targetprop]);
     console.log(id + ":id parti_num:" + parti_num);
+    console.log(user_data);
 
-
+    user_data[id][targetprop] = (user_data[id][targetprop]) % 3;
 
     $('[id="' + id + '"]').val(["未定", "出席", "欠席"][user_data[id][targetprop]]);
 }

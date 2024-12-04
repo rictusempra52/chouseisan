@@ -1,5 +1,7 @@
 
-// 見出しとデータを与えると表を出力する関数
+/**
+ * 見出しとデータを与えると表を出力する関数
+ */
 function make_grid_on_history_area(heading, data) {
     // すでに表があれば、削除してから新しく表を出力する
     console.log("表の削除開始");
@@ -18,6 +20,17 @@ function make_grid_on_history_area(heading, data) {
     grid.render($(".history-area").get(0));
     console.log("表の出力完了");
 
+}
+
+/**
+ * 表を更新する関数
+*/
+function update_grid(heading, data) {
+    // 更新した列情報とデータを設定して再描画
+    grid.updateConfig({
+        columns: heading, // 更新した列名リスト
+        data: data,       // 更新したデータ
+    }).forceRender(); // 更新した内容を画面に即座に反映
 }
 
 /**
@@ -40,15 +53,12 @@ function make_grid_on_history_area(heading, data) {
  */
 function chousei_button(name, status) {
     // status が 0, 1, 2 以外の場合は 0 ("未定") にする
-    if (![0, 1, 2].includes(status)) {
-        status = 0;
-    }
+    if (![0, 1, 2].includes(status)) { status = 0; }
 
-    const txt = ["未定", "出席", "欠席"]; // 各状態に対応するテキスト
     let tmp = "<input type='button' id='";
     tmp += max_btn_id++
     tmp += "' name='" + name
-    tmp += "' value='" + txt[status] + "' />";
+    tmp += "' value='" + atnd_text[status] + "' />";
     return gridjs.html(tmp);
 }
 
@@ -67,8 +77,5 @@ function addColumnToRight(columnName, data) {
     const updatedData = grid.config.data.map((row, index) => [...row, data[index]]);
 
     // 更新した列情報とデータを設定して再描画
-    grid.updateConfig({
-        columns: updatedColumns, // 更新した列名リスト
-        data: updatedData,       // 更新したデータ
-    }).forceRender(); // 更新した内容を画面に即座に反映
+    update_grid(updatedColumns, updatedData);
 }
