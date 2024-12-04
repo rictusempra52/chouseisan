@@ -15,7 +15,11 @@ const atnd = {
     absence: 2,     // 欠席
 };
 
-const atnd_text = ["未定", "出席", "欠席"];
+const atnd_text = [
+    "未定",
+    "出席",
+    "欠席"
+];
 
 let tableheading = ["名前", "出席番号"];
 // /**
@@ -114,12 +118,15 @@ let user_data = [
     new User("らんこ"),
 ];
 
-// テーブルデータのうち、名前と出席番号をtable_htmlに格納
+/**
+ * テーブルデータ
+ * @type {string[][]} 
+ * [名前, 出席番号, 出欠ボタン]
+ * [名前, 出席番号, 出欠ボタン]…
+ * の要領で格納されていく。そのままgridjsに突っ込めばよい状態
+ */
 let table_html = user_data.map((user) => {
-    return [
-        user.name,
-        user.student_number,
-    ];
+    return [user.name, user.student_number,];
 });
 
 /**
@@ -142,11 +149,7 @@ console.log(table_html);
 // 表を出力
 make_grid_on_history_area(tableheading, table_html);
 
-addColumnToRight(
-    "出欠", user_data.map((row) => {
-        return chousei_button("participation", row.participation);
-    })
-);
+addColumnToRight("出欠");
 
 //以下、function定義-----------------------------
 /**

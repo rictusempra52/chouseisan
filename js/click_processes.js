@@ -46,16 +46,15 @@ function add_date() {
     updatedcolumns.push(selected_date)
     grid.updateConfig({ colomns: updatedcolumns, }).forceRender()
 
-    //2. user_dataのparticipationプロパティ(配列)に、新しい列を追加
+    //user_dataのparticipationプロパティ(配列)に、新しい列を追加
     user_data.map((user) => {
         user.push_participation(atnd.not_decided);
     })
 
+    // 追加された列をtable_htmlに追加
+
     // 3. grid.jsの表を更新する
-    addColumnToRight(
-        selected_date,
-        Array(table_html.length).fill(chousei_button("participation", atnd.not_decided))
-    );
+    addColumnToRight(selected_date);
 }
 
 function submit_nittei() {
@@ -66,19 +65,20 @@ function submit_nittei() {
 * user_dataの出欠情報を1つ進める
 * 3を超えたら0(未定)に戻す
 */
-function change_participation(id) {
-    // console.log(id);
-    // console.log(user_data[id]);
+function change_participation(index) {
 
-    // parti_○　の○部分を計算する
-    const parti_num = Math.floor(id / user_data.length);
-    const targetprop = 'parti_' + parti_num;
+    // // parti_○　の○部分を計算する
+    // const parti_num = Math.floor(index / user_data.length);
+    // const targetprop = 'parti_' + parti_num;
 
-    console.log(id + ":id parti_num:" + parti_num);
-    console.log(user_data);
+    // console.log(index + ":id parti_num:" + parti_num);
+    // console.log(user_data);
 
-    user_data[id][targetprop] = (user_data[id][targetprop]) % 3;
+    // user_data[index].participation[index]
 
-    $('[id="' + id + '"]').val(["未定", "出席", "欠席"][user_data[id][targetprop]]);
+
+    user_data[index][targetprop] = (user_data[index][targetprop]) % 3;
+
+    $('[id=btn"' + index + '"]').val(["未定", "出席", "欠席"][user_data[index][targetprop]]);
 }
 

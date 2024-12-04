@@ -35,11 +35,9 @@ function update_grid(heading, data) {
 
 /**
  * 表の中に日程変更用のボタンを挿入する関数
- * 
  * @function chousei_button
- * @param {string} name - ボタンの名前属性
  * @param {number} status - ボタンの初期状態を示す番号 (0: 未定, 1: 出席, 2: 欠席) 0,1,2 以外の場合は 0 ("未定") になります。
- * @returns {string} - 状態変更用ボタンのHTML要素を表す文字列 (gridjs の html ラッパーを使用)
+ * @returns {gridjs.html} 状態変更用ボタンのHTML要素を表す文字列 (gridjs の html ラッパーを使用)
  * 
  * @description
  * この関数は、指定された状態 (`status`) に基づいてボタンを生成します。
@@ -48,16 +46,17 @@ function update_grid(heading, data) {
  * 
  * @example
  * // 状態が "出席" のボタンを作成
- * const buttonHtml = chousei_button("attendance", 1);
- * // => <input type='button' id='btn1' name='attendance' value='出席' />
+ * const buttonHtml = chousei_button(1);
+ * // => <input type='button' id='1' name='participation' value='出席' />
  */
-function chousei_button(name, status) {
+function chousei_button(status) {
     // status が 0, 1, 2 以外の場合は 0 ("未定") にする
     if (![0, 1, 2].includes(status)) { status = 0; }
+    
 
-    let tmp = "<input type='button' id='";
+    let tmp = "<input type='button' id=btn'";
     tmp += max_btn_id++
-    tmp += "' name='" + name
+    tmp += "' name='participation'";
     tmp += "' value='" + atnd_text[status] + "' />";
     return gridjs.html(tmp);
 }
@@ -65,17 +64,17 @@ function chousei_button(name, status) {
 // 列を右端に追加する関数
 /**
 * @param {string} columnName - 新しく追加する列の名前
-* @param {array} data - 新しい列に表示するデータ（各行ごとに値を設定する配列）
 */
-function addColumnToRight(columnName, data) {
-    console.log("表の更新");
+function addColumnToRight(columnName) {
 
-    // 既存の列情報を取得し、新しい列名を追加
-    const updatedColumns = [...grid.config.columns, columnName];
+    // table_htmlに新しい列を追加
+    for (let i = 0; i < table_html.length; i++) {
+        table_html[i].push(chousei_button(atnd.not_decided));
+    }
 
-    // 既存の行データを取得し、それぞれの行に新しいデータを追加
-    const updatedData = grid.config.data.map((row, index) => [...row, data[index]]);
+    //新しい列名を追加
+    tableheading.push(columnName);
 
     // 更新した列情報とデータを設定して再描画
-    update_grid(updatedColumns, updatedData);
+    update_grid(tableheading, table_html);
 }
