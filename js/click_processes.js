@@ -6,9 +6,13 @@ $('#add_date').click(() => add_date());
 // 日程送信ボタンがclickされた時の処理
 $('#submit').click(() => submit_nittei());
 // grid.js中の日程入力ボタンがclickされた時の処理
-// このbuttonは動的に作成されているので、onを使うそうです
+// このbuttonは動的に作成されているので、onを使わないといけないらしい
 $(document).on('click', '.gridjs-td input[type="button"]', function () {
-    change_participation($(this).attr('id'), $(this).attr(''));
+    // ボタンのidを取得(idには文字が含まれるので、parseFloatを使って数値に変換する)
+    // parseFloatは文字列を数値に変換する関数で、文字を無視する
+    const button_id = parseFloat($(this).attr('id').replace(/[^0-9.]/g, ''));
+
+    change_participation(button_id);
 });
 
 
@@ -65,8 +69,7 @@ function submit_nittei() {
 * user_dataの出欠情報を1つ進める
 * 3を超えたら0(未定)に戻す
 */
-function change_participation(index) {
-
+function change_participation(btnid) {
     // // parti_○　の○部分を計算する
     // const parti_num = Math.floor(index / user_data.length);
     // const targetprop = 'parti_' + parti_num;
@@ -75,10 +78,28 @@ function change_participation(index) {
     // console.log(user_data);
 
     // user_data[index].participation[index]
+    const btncolomn = calculate_column(btnid);
 
 
-    user_data[index][targetprop] = (user_data[index][targetprop]) % 3;
+    // user_data[btnid][btncolomn] = (user_data[btnid][btncolomn]) % 3;
 
-    $('[id=btn"' + index + '"]').val(["未定", "出席", "欠席"][user_data[index][targetprop]]);
 }
 
+
+/**
+ * ボタンのIDを入れると、何列目にあるかを返す関数
+ * @param {number} btnid - ボタンのID
+ * @returns {number} - 何列目にあるか
+*/
+function calculate_column(btnid) {
+    // participationの配列の長さ(=現在の日程選択肢の数)を取得
+    const colomns_per_row = user_data[0].participation.length;
+    // btnidをcolomns_per_rowで割った余り(=クリックされたボタンが何列目にあるか)を取得
+    const colomn_num = btnid % colomns_per_row;
+
+    console.log('ボタンのid:' + btnid);
+    console.log('1行あたりの列数:' + colomns_per_row);
+    console.log('ボタンの列数:' + colomn_num);
+
+    return colomn_num
+}

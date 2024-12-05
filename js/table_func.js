@@ -54,9 +54,9 @@ function chousei_button(status) {
     if (![0, 1, 2].includes(status)) { status = 0; }
     
 
-    let tmp = "<input type='button' id=btn'";
+    let tmp = "<input type='button' id=btn";
     tmp += max_btn_id++
-    tmp += "' name='participation'";
+    tmp += " name='participation'";
     tmp += "' value='" + atnd_text[status] + "' />";
     return gridjs.html(tmp);
 }
