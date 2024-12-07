@@ -4,7 +4,7 @@ $('.slide-down').on('click', slide_up_or_down);
 // 日程決定ボタンがclickされた時の処理
 $('#add_date').click(() => add_date());
 // 日程送信ボタンがclickされた時の処理
-$('#submit').click(() => submit_nittei());
+$('#submit').click(() => submit_nittei_LS());
 // grid.js中の日程入力ボタンがclickされた時の処理
 // このbuttonは動的に作成されているので、onを使わないといけないらしい
 $(document).on('click', '.gridjs-td input[type="button"]', function () {
@@ -56,9 +56,12 @@ function add_date() {
     render_buttons();
 }
 
-function submit_nittei_localstrage() {
-    localStorage.setItem('table_html', JSON.stringify(table_html));
- }
+function submit_nittei_LS() {
+    let i = 0;
+    user_data.map((user) => {
+        user.saveToLocalStorageAsJSON(i++);
+    })
+}
 
 /** user_dataの出欠情報を1つ進める 3を超えたら0(未定)に戻す*/
 function change_participation(row, col) {

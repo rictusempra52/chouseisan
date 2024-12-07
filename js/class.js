@@ -23,7 +23,7 @@ class User {
     // getter
     get name() { return this.#username; }
     get student_number() { return this.#student_number; }
-    get participation() { return this.#participation; }    
+    get participation() { return this.#participation; }
     get participation_text() {
         this.#participation_text = atnd_text[this.#participation];
         return this.#participation_text;
@@ -49,4 +49,20 @@ class User {
         this.#participation[index] = value;
     }
 
+    /** JSON.stringify 用に出力を定義*/
+    toJSON() {
+        return JSON.stringify({
+            name: this.#username,
+            student_number: this.#student_number,
+            participation: this.#participation,
+        });
+    }
+
+    /**JSONをローカルストレージに保存*/
+    saveToLocalStorageAsJSON(index) {
+        let user_dataJSON = this.toJSON();
+        localStorage.setItem('userdata' + index, user_dataJSON);
+        console.log(user_dataJSON);  
+    
+    }
 }
