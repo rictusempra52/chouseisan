@@ -8,12 +8,16 @@ $('#submit').click(() => submit_nittei());
 // grid.js中の日程入力ボタンがclickされた時の処理
 // このbuttonは動的に作成されているので、onを使わないといけないらしい
 $(document).on('click', '.gridjs-td input[type="button"]', function () {
-    // ボタンのidを取得(idには文字が含まれるので、parseFloatを使って数値に変換する)
-    // parseFloatは文字列を数値に変換する関数で、文字を無視する
-    const button_id = parseFloat($(this).attr('id').replace(/[^0-9.]/g, ''));
+    const row = $(this).attr('data-row');
+    const col = $(this).attr('data-column');
+    {
+        console.log('row:' + row);
+        console.log('col:' + col);
+    }
+    change_participation(row, col);
 
-    change_participation(button_id);
 });
+
 
 
 function slide_up_or_down() {
@@ -25,6 +29,7 @@ function slide_up_or_down() {
     if (slide_class.indexOf('active') !== -1) {
         $('div.' + data_slide).slideUp();
         $(this).removeClass('active');
+
         console.log("slideupされた");
 
     } else {
@@ -39,67 +44,35 @@ function slide_up_or_down() {
 function add_date() {
     const selected_date = $('#chousei-nittei').val();
 
-    // 新しい列を右端に追加するためのインデックスを計算
-    const newColumnIndex = tableheading.length - 1;
-
-    // 新しい見出しを追加
+    // 新しい列を右端に追加
     tableheading.push(selected_date);
 
-    // 見出しを更新
-    const updatedcolumns = [...grid.config.columns]
-    updatedcolumns.push(selected_date)
-    grid.updateConfig({ colomns: updatedcolumns, }).forceRender()
+    // user_dataに新しい列を追加
+    user_data.forEach((user) => {
+        user.participation.push(atnd.not_decided); // 参加未定のデフォルト値を設定
+    });
 
-    //user_dataのparticipationプロパティ(配列)に、新しい列を追加
-    user_data.map((user) => {
-        user.push_participation(atnd.not_decided);
-    })
-
-    // 追加された列をtable_htmlに追加
-
-    // 3. grid.jsの表を更新する
-    addColumnToRight(selected_date);
+    // ボタンのIDを更新するための再レンダリング
+    render_buttons();
 }
 
-function submit_nittei() {
+function submit_nittei_localstrage() {
+    localStorage.setItem('table_html', JSON.stringify(table_html));
+ }
 
-}
+/** user_dataの出欠情報を1つ進める 3を超えたら0(未定)に戻す*/
+function change_participation(row, col) {
+    // tableheadingには触らない
 
-/** 
-* user_dataの出欠情報を1つ進める
-* 3を超えたら0(未定)に戻す
-*/
-function change_participation(btnid) {
-    // // parti_○　の○部分を計算する
-    // const parti_num = Math.floor(index / user_data.length);
-    // const targetprop = 'parti_' + parti_num;
+    // user_dataの出欠情報を1つ進める
+    // 3を超えたら0(未定)に戻す　この操作は余りを利用
+    console.log(user_data[row]);
 
-    // console.log(index + ":id parti_num:" + parti_num);
-    // console.log(user_data);
+    const currentStatus = user_data[row].participation[col];
+    const newStatus = (currentStatus + 1) % 3;
+    user_data[row].participation[col] = newStatus;
 
-    // user_data[index].participation[index]
-    const btncolomn = calculate_column(btnid);
+    // ボタンの表示を手動で更新
+    $(`#btn${row}-${col}`).val(atnd_text[newStatus]);
 
-
-    // user_data[btnid][btncolomn] = (user_data[btnid][btncolomn]) % 3;
-
-}
-
-
-/**
- * ボタンのIDを入れると、何列目にあるかを返す関数
- * @param {number} btnid - ボタンのID
- * @returns {number} - 何列目にあるか
-*/
-function calculate_column(btnid) {
-    // participationの配列の長さ(=現在の日程選択肢の数)を取得
-    const colomns_per_row = user_data[0].participation.length;
-    // btnidをcolomns_per_rowで割った余り(=クリックされたボタンが何列目にあるか)を取得
-    const colomn_num = btnid % colomns_per_row;
-
-    console.log('ボタンのid:' + btnid);
-    console.log('1行あたりの列数:' + colomns_per_row);
-    console.log('ボタンの列数:' + colomn_num);
-
-    return colomn_num
 }

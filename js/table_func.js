@@ -1,7 +1,5 @@
 
-/**
- * 見出しとデータを与えると表を出力する関数
- */
+/**見出しとデータを与えると表を出力する関数*/
 function make_grid_on_history_area(heading, data) {
     // すでに表があれば、削除してから新しく表を出力する
     console.log("表の削除開始");
@@ -22,10 +20,40 @@ function make_grid_on_history_area(heading, data) {
 
 }
 
-/**
- * 表を更新する関数
-*/
+/** ボタンIDを再生成して正確に列を反映させる関数 
+ * この関数は、ユーザーの参加状態に基づいてボタンを再生成し、
+ * 表のデータを更新して、画面に反映させます。
+ */
+function render_buttons() {
+    // 全ユーザーに対して処理
+    user_data.forEach((user, rowIndex) => {
+        // 各ユーザーの「参加状態」を管理している配列は「participation」プロパティ
+        // 参加状態（0: 未定, 1: 出席, 2: 欠席）ごとに処理
+        user.participation.forEach((status, colIndex) => {
+
+            // ボタンを作成
+            const buttonHTML = chousei_button(status, rowIndex, colIndex);
+            // table_html 配列に、ボタンのHTMLを格納
+            table_html[rowIndex][colIndex + 2] = buttonHTML;// +2は非ボタン列の分を考慮
+            // log
+            {
+                console.log('ボタンを追加しました。');
+                console.log('行:' + rowIndex);
+                console.log('列:' + colIndex);
+                console.log(buttonHTML);
+            }
+        });
+    });
+
+    // 表を再更新して画面に表示
+    update_grid(tableheading, table_html);
+}
+
+
+/**表を更新する関数*/
 function update_grid(heading, data) {
+    console.log("表の更新開始");
+    
     // 更新した列情報とデータを設定して再描画
     grid.updateConfig({
         columns: heading, // 更新した列名リスト
@@ -33,48 +61,43 @@ function update_grid(heading, data) {
     }).forceRender(); // 更新した内容を画面に即座に反映
 }
 
-/**
- * 表の中に日程変更用のボタンを挿入する関数
+/**表の中に日程変更用のボタンを挿入する関数 
  * @function chousei_button
- * @param {number} status - ボタンの初期状態を示す番号 (0: 未定, 1: 出席, 2: 欠席) 0,1,2 以外の場合は 0 ("未定") になります。
- * @returns {gridjs.html} 状態変更用ボタンのHTML要素を表す文字列 (gridjs の html ラッパーを使用)
- * 
- * @description
- * この関数は、指定された状態 (`status`) に基づいてボタンを生成します。
- * 状態は "未定", "出席", "欠席" の3種類があり、対応するラベルがボタンの `value` 属性として設定されます。
- * 生成されたボタンは grid.js の `html` メソッドを使用してテーブルに挿入することが想定されています。
- * 
- * @example
- * // 状態が "出席" のボタンを作成
- * const buttonHtml = chousei_button(1);
- * // => <input type='button' id='1' name='participation' value='出席' />
+ * @param {number} status - ボタンの初期状態を示す番号 (0: 未定, 1: 出席, 2: 欠席)
+ * @param {number} row - ボタンが配置される行番号
+ * @param {number} column - ボタンが配置される列番号
+ * @returns {gridjs.html} - 状態変更用ボタンのHTML要素を表す文字列
  */
-function chousei_button(status) {
+function chousei_button(status, row, column) {
     // status が 0, 1, 2 以外の場合は 0 ("未定") にする
-    if (![0, 1, 2].includes(status)) { status = 0; }
-    
+    console.log("status:" + status);
 
-    let tmp = "<input type='button' id=btn";
-    tmp += max_btn_id++
-    tmp += " name='participation'";
-    tmp += "' value='" + atnd_text[status] + "' />";
-    return gridjs.html(tmp);
+    if (![0, 1, 2].includes(status)) { status = 0; }
+
+    // ボタンHTMLを作成
+    const btnhtml =
+        `<input type='button' id='btn${row}-${column}' name='participation' value='${atnd_text[status]}' data-row='${row}' data-column='${column}' />`;
+    rtrn = gridjs.html(btnhtml);
+    console.log("htmlデータ:");
+    console.log(rtrn);
+
+    return rtrn;
 }
 
-// 列を右端に追加する関数
-/**
+
+/**列を右端に追加する関数
 * @param {string} columnName - 新しく追加する列の名前
 */
 function addColumnToRight(columnName) {
-
-    // table_htmlに新しい列を追加
-    for (let i = 0; i < table_html.length; i++) {
-        table_html[i].push(chousei_button(atnd.not_decided));
+    for (let row = 0; row < table_html.length; row++) {
+        // 列を追加し、ボタンに行・列番号を設定
+        const newColumn = table_html[row].length - 2; // -2は非ボタン列の分を考慮
+        table_html[row].push(chousei_button(atnd.not_decided, row, newColumn));
     }
 
-    //新しい列名を追加
+    // 新しい列名を追加
     tableheading.push(columnName);
 
-    // 更新した列情報とデータを設定して再描画
+    // 表を更新
     update_grid(tableheading, table_html);
 }
