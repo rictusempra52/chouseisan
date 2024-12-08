@@ -1,7 +1,6 @@
 // class.js
 
-/**
- * ユーザー情報を格納するクラス
+/**ユーザー情報を格納するクラス 
  * @param {string} username - ユーザー名
  * @param {string} student_number - 出席番号
  * @property {string} name - ユーザー名
@@ -14,10 +13,12 @@ class User {
     #participation;
     #participation_text;
 
-    constructor(username, student_number) {
+    constructor(username, student_number, participation) {
         this.#username = username;
         this.#student_number = student_number;
-        this.#participation = [atnd.not_decided];
+        this.#participation = participation;
+        this.#participation_text = atnd_text[this.#participation];
+
     }
 
     // getter
@@ -49,7 +50,7 @@ class User {
         this.#participation[index] = value;
     }
 
-    /** JSON.stringify 用に出力を定義*/
+    /** JSON用に出力を定義*/
     toJSON() {
         return JSON.stringify({
             name: this.#username,
@@ -58,11 +59,5 @@ class User {
         });
     }
 
-    /**JSONをローカルストレージに保存*/
-    saveToLocalStorageAsJSON(index) {
-        let user_dataJSON = this.toJSON();
-        localStorage.setItem('userdata' + index, user_dataJSON);
-        console.log(user_dataJSON);  
-    
-    }
+
 }

@@ -58,9 +58,13 @@ function add_date() {
 
 function submit_nittei_LS() {
     let i = 0;
-    user_data.map((user) => {
-        user.saveToLocalStorageAsJSON(i++);
-    })
+    let user_dataJSON = [];
+    user_data.map((user) => { user_dataJSON[i++] = user.toJSON(); });
+    user_dataJSON = "[" + user_dataJSON + "]";
+    localStorage.setItem('userdata', user_dataJSON);
+    console.log(user_dataJSON);
+
+
 }
 
 /** user_dataの出欠情報を1つ進める 3を超えたら0(未定)に戻す*/
@@ -75,7 +79,10 @@ function change_participation(row, col) {
     const newStatus = (currentStatus + 1) % 3;
     user_data[row].participation[col] = newStatus;
 
+    const button = $(`#btn${row}-${col}`);
+    button.attr('data-participation', newStatus);
+
     // ボタンの表示を手動で更新
-    $(`#btn${row}-${col}`).val(atnd_text[newStatus]);
+    button.val(atnd_text[newStatus]);
 
 }

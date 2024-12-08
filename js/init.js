@@ -1,8 +1,7 @@
 //ページを開いたときに最初に実行される処理-------------------------
 
 //データの定義
-/**
- * 出欠ステータスを管理する定数オブジェクト
+/**出欠ステータスを管理する定数オブジェクト* 
  * 
  * @constant {Object} attendance - 出欠の状態を表す定数オブジェクト
  * @property {number} not_decided - 未定 (0)
@@ -20,22 +19,24 @@ const atnd_text = ["未定", "出席", "欠席"];
 let tableheading = ["名前", "出席番号"];
 
 let user_data = [
-    new User("ゆき", "TW01"),
-    new User("きみしー", "TW02"),
-    new User("りょーすけ", "TW03"),
-    new User("なつき", "TW04"),
-    new User("ふみや", "TW05"),
-    new User("あべちゃん", "TW06"),
-    new User("かがやん", "TW07"),
-    new User("かっしー"),
-    new User("ひろし"),
-    new User("たろー"),
-    new User("かわたつ"),
-    new User("こすげ"),
-    new User("ほそかわ"),
-    new User("ぺんぎん"),
-    new User("らんこ"),
+    new User("ゆき", "TW01", [atnd.not_decided]),
+    new User("きみしー", "TW02", [atnd.not_decided]),
+    new User("りょーすけ", "TW03", [atnd.not_decided]),
+    new User("なつき", "TW04", [atnd.not_decided]),
+    new User("ふみや", "TW05", [atnd.not_decided]),
+    new User("あべちゃん", "TW06", [atnd.not_decided]),
+    new User("かがやん", "TW07", [atnd.not_decided]),
+    new User("かっしー", "", [atnd.not_decided]),
+    new User("ひろし", "", [atnd.not_decided]),
+    new User("たろー", "", [atnd.not_decided]),
+    new User("かわたつ", "", [atnd.not_decided]),
+    new User("こすげ", "", [atnd.not_decided]),
+    new User("ほそかわ", "", [atnd.not_decided]),
+    new User("ぺんぎん", "", [atnd.not_decided]),
+    new User("らんこ", "", [atnd.not_decided]),
 ];
+getUserDataFromLocalStrage();
+
 
 /**テーブルデータ 
  * @type {string[][]} 
@@ -44,25 +45,22 @@ let user_data = [
  * の要領で格納されていく。そのままgridjsに突っ込めばよい状態
  */
 let table_html = user_data.map((user) => {
-    return [user.name, user.student_number,];
+    return [user.name, user.student_number];
 });
 
 let grid;
-/**
- *合計人数を表す定数
-   */
+/**合計人数を表す定数  */
 const headcount = user_data.length
 
 // 今日の日付以前は選択できないようにする
 set_minimum_date();
+// addColumn("日程")
 
 console.log("日程調整用ボタン挿入完了 table_html↓");
 console.log(table_html);
 
 // 表を出力
 make_grid_on_history_area(tableheading, table_html);
-
-addColumnToRight("出欠");
 
 //以下、function定義-----------------------------
 /**
@@ -75,3 +73,14 @@ function set_minimum_date() {
     $('input[type="date"]').attr('value', today);
 }
 
+function getUserDataFromLocalStrage() {
+    const user_dataJSON = localStorage.getItem('userdata');
+    if (user_dataJSON) {
+        const user_dataArray = JSON.parse(user_dataJSON);
+        user_data = user_dataArray.map((user) => new User(user.name, user.student_number, user.participation))
+
+        console.log("ユーザーデータをローカルストレージから取得しました。");
+        console.log(user_data);
+
+    }
+}
