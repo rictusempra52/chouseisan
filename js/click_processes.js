@@ -18,29 +18,6 @@ $(document).on('click', '.gridjs-td input[type="button"]', function () {
 
 });
 
-
-
-function slide_up_or_down() {
-
-    const slide_class = $(this).attr('class');
-    const data_slide = $(this).attr('data-slide');
-
-
-    if (slide_class.indexOf('active') !== -1) {
-        $('div.' + data_slide).slideUp();
-        $(this).removeClass('active');
-
-        console.log("slideupされた");
-
-    } else {
-        $('div.' + data_slide).slideDown();
-        $(this).addClass('active');
-        console.log("slidedownされた");
-
-    }
-
-}
-
 function add_date() {
     const selected_date = $('#chousei-nittei').val();
 
@@ -63,8 +40,10 @@ function submit_nittei_LS() {
     user_dataJSON = "[" + user_dataJSON + "]";
     localStorage.setItem('userdata', user_dataJSON);
     console.log(user_dataJSON);
+}
 
-
+function submit_nittei_FB() {
+    
 }
 
 /** user_dataの出欠情報を1つ進める 3を超えたら0(未定)に戻す*/
@@ -72,13 +51,13 @@ function change_participation(row, col) {
     // tableheadingには触らない
 
     // user_dataの出欠情報を1つ進める
-    // 3を超えたら0(未定)に戻す　この操作は余りを利用
-    console.log(user_data[row]);
-
+    // 3を超えたら0(未定)に戻す　この操作は余りを利
     const currentStatus = user_data[row].participation[col];
     const newStatus = (currentStatus + 1) % 3;
     user_data[row].participation[col] = newStatus;
 
+    // ボタンのdata-participationを更新(更新すると表示が変わる)
+    // dataでなくattrにしないとCSSの変更が反映されないらしい
     const button = $(`#btn${row}-${col}`);
     button.attr('data-participation', newStatus);
 
