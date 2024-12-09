@@ -13,6 +13,7 @@
     />
     <!-- スライドダウンCSSを読み込み -->
     <link rel="stylesheet" href="./css/main.css" />
+    <!-- firebase -->
   </head>
 
   <body>
@@ -27,12 +28,23 @@
       </div>
     </div>
     <footer></footer>
-    <!-- firebase -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
     <script type="module">
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
       // TODO: Add SDKs for Firebase products that you want to use
       // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        serverTimestamp,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
       // Your web app's Firebase configuration
       const firebaseConfig = {
@@ -49,9 +61,60 @@
 
       // Initialize Cloud Firestore and get a reference to the service
       const db = getFirestore(app);
+
+      // 日程決定ボタンがclickされた時の処理
+      $("#add_date").click(() => add_date());
+      // 日程送信ボタンがclickされた時の処理
+      $("#submit").click(() => submit_nittei_FB());
+      // grid.js中の日程入力ボタンがclickされた時の処理
+      // このbuttonは動的に作成されているので、onを使わないといけないらしい
+      $(document).on("click", '.gridjs-td input[type="button"]', function () {
+        const row = $(this).attr("data-row");
+        const col = $(this).attr("data-column");
+        {
+          console.log("row:" + row);
+          console.log("col:" + col);
+        }
+        change_participation(row, col);
+      });
+
+      function submit_nittei_FB() {
+        let i = 0;
+        user_data.map((user) => {
+          let postData = {
+            id: i++,
+            username: user.name,
+            student_number: user.student_number,
+            participation: user.participation,
+          };
+          if (typeof postData.student_number === "undefined") {
+            postData.student_number = "";
+          }
+          addDoc(collection(db, "chousei"), postData);
+        });
+        alert("firebaseに日程を送信しました");
+      }
+
+      onSnapshot(collection(db, "chousei"), (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            console.log("新しいデータ: ", change.doc.data());
+            user_data[change.doc.data().id] = new User(
+              change.doc.data().username,
+              change.doc.data().student_number,
+              change.doc.data().participation
+            );
+            // if (change.type === "modified") {
+            //   console.log("Modified city: ", change.doc.data());
+            // }
+            // if (change.type === "removed") {
+            //   console.log("Removed city: ", change.doc.data());
+            // }
+          }
+        });
+        console.log(user_data);
+      });
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
     <script src="./js/table_func.js"></script>
     <script src="./js/class.js"></script>
     <script src="./js/init.js"></script>

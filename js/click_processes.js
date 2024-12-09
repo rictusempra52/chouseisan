@@ -1,22 +1,4 @@
 
-// slide1がclickされた時の処理
-$('.slide-down').on('click', slide_up_or_down);
-// 日程決定ボタンがclickされた時の処理
-$('#add_date').click(() => add_date());
-// 日程送信ボタンがclickされた時の処理
-$('#submit').click(() => submit_nittei_LS());
-// grid.js中の日程入力ボタンがclickされた時の処理
-// このbuttonは動的に作成されているので、onを使わないといけないらしい
-$(document).on('click', '.gridjs-td input[type="button"]', function () {
-    const row = $(this).attr('data-row');
-    const col = $(this).attr('data-column');
-    {
-        console.log('row:' + row);
-        console.log('col:' + col);
-    }
-    change_participation(row, col);
-
-});
 
 function add_date() {
     const selected_date = $('#chousei-nittei').val();
@@ -40,10 +22,6 @@ function submit_nittei_LS() {
     user_dataJSON = "[" + user_dataJSON + "]";
     localStorage.setItem('userdata', user_dataJSON);
     console.log(user_dataJSON);
-}
-
-function submit_nittei_FB() {
-    
 }
 
 /** user_dataの出欠情報を1つ進める 3を超えたら0(未定)に戻す*/
