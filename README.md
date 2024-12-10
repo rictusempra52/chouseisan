@@ -1,12 +1,13 @@
 # chouseisan
 
-## 調整さん MVP(ver2.0)
+## 調整さん MVP(ver3.0)
 
 # 制作サイトの説明
 
 調整さんの MVP(Minimun Valuable Product)を目指しました。継続して目指しています。
 まだ MVP の体をなしておりません…
 localstorage により、出欠状態が保存できるようになりました。
+Ver3.0:firebaseを組み込みました。
 
 # 工夫した点・こだわった点
 
