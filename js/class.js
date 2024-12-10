@@ -1,4 +1,5 @@
 // class.js
+const atnd_text = ["未定", "出席", "欠席"];
 
 /**ユーザー情報を格納するクラス 
  * @param {string} username - ユーザー名

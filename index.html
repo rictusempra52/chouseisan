@@ -47,6 +47,7 @@
         setDoc,
         serverTimestamp,
         onSnapshot,
+        getDocs,
       } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
       // Your web app's Firebase configuration
@@ -67,8 +68,8 @@
 
       //データの定義
 
-      const atnd_text = ["未定", "出席", "欠席"];
       let tableheading = ["名前", "出席番号"];
+
       /**出欠ステータスを管理する定数オブジェクト*
        *
        * @constant {Object} attendance - 出欠の状態を表す定数オブジェクト
@@ -100,6 +101,7 @@
         new User("らんこ", "", [atnd.not_decided]),
       ];
 
+      getUserDataFromFB();
       /**テーブルデータ
        * @type {string[][]}
        * [名前, 出席番号, 出欠ボタン]
@@ -166,15 +168,44 @@
         }
       }
 
-      function getUserDataFromFB(snapshot) {
-        snapshot.docChanges().forEach((change) => {
-          console.log("新しいデータ: ", change.doc.data());
-          user_data[change.doc.data().id] = new User(
-            change.doc.data().username,
-            change.doc.data().student_number,
-            change.doc.data().participation
+      // function getUserDataFromFB(snapshot) {
+      //   snapshot.docChanges().forEach((change) => {
+      //     console.log("新しいデータ: ", change.doc.data());
+      //     user_data[change.doc.data().id] = new User(
+      //       change.doc.data().username,
+      //       change.doc.data().student_number,
+      //       change.doc.data().participation
+      //     );
+      //   });
+      // }
+      async function getUserDataFromFB() {
+        try {
+          // Firestoreのデータを一度だけ取得
+          const snapshot = await getDocs(collection(db, "chousei"));
+          const updatedUserData = {};
+
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            updatedUserData[doc.id] = new User(
+              data.username,
+              data.student_number,
+              data.participation
+            );
+          });
+
+          // ローカルの user_data を更新
+          user_data = updatedUserData;
+
+          console.log(
+            "Firestore からユーザーデータを取得しました: ",
+            user_data
           );
-        });
+        } catch (error) {
+          console.error(
+            "Firestore からのデータ取得中にエラーが発生しました: ",
+            error
+          );
+        }
       }
 
       function submit_nittei_FB() {
