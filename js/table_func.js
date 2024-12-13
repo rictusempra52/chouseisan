@@ -21,10 +21,7 @@ function make_grid_on_history_area(heading, data) {
 
 }
 
-/** ボタンIDを再生成して正確に列を反映させる関数 
- * この関数は、ユーザーの参加状態に基づいてボタンを再生成し、
- * 表のデータを更新して、画面に反映させます。
- */
+
 function render_buttons() {
     // 全ユーザーに対して処理
     user_data.forEach((user, rowIndex) => {
